@@ -7,10 +7,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import wrappers.GenericWrappers;
 
-public class AndroidFirstScript extends GenericWrappers {
+public class AndroidFirstScriptInSauceLabs extends GenericWrappers {
     @BeforeMethod
     public void bm() {
-        launchApp("Android", "UiAutomator2", System.getProperty("user.dir") + "/apks/leaforg.apk", "com.testleaf.leaforg", "com.testleaf.leaforg.MainActivity");
+        launchAndroidAppInSauceLabs();
     }
 
     @Test
