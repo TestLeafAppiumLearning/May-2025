@@ -4,6 +4,8 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -11,6 +13,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class GenericWrappers {
     public AppiumDriver driver;
@@ -85,5 +89,150 @@ public class GenericWrappers {
 
     public void enterData(WebElement element, String data) {
         element.sendKeys(data);
+    }
+
+    private void swipe(int startX, int startY, int endX,int endY) {
+        PointerInput input = new PointerInput(PointerInput.Kind.TOUCH,"finger 1");
+        Sequence seq = new Sequence(input, 1);
+        seq.addAction(input.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY));
+        seq.addAction(input.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        seq.addAction(input.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(),endX,endY));
+        seq.addAction(input.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singletonList(seq));
+    }
+
+    public void pinch() {
+        int maxHeight = driver.manage().window().getSize().getHeight();
+        int maxWidth = driver.manage().window().getSize().getWidth();
+        PointerInput input = new PointerInput(PointerInput.Kind.TOUCH,"finger 1");
+        Sequence seq = new Sequence(input, 1);
+        seq.addAction(input.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), (int) (maxWidth* 0.25), (int) (maxHeight * 0.75)));
+        seq.addAction(input.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        seq.addAction(input.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(),(int) (maxWidth* 0.5), (int) (maxHeight * 0.5)));
+        seq.addAction(input.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        PointerInput input2 = new PointerInput(PointerInput.Kind.TOUCH,"finger 2");
+        Sequence seq2 = new Sequence(input2, 1);
+        seq2.addAction(input2.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), (int) (maxWidth* 0.75), (int) (maxHeight * 0.25)));
+        seq2.addAction(input2.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        seq2.addAction(input2.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(),(int) (maxWidth* 0.5), (int) (maxHeight * 0.5)));
+        seq2.addAction(input2.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Arrays.asList(seq,seq2));
+    }
+
+    public void zoom() {
+        int maxHeight = driver.manage().window().getSize().getHeight();
+        int maxWidth = driver.manage().window().getSize().getWidth();
+        PointerInput input = new PointerInput(PointerInput.Kind.TOUCH,"finger 1");
+        Sequence seq = new Sequence(input, 1);
+        seq.addAction(input.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(),(int) (maxWidth* 0.5), (int) (maxHeight * 0.5)));
+        seq.addAction(input.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        seq.addAction(input.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(), (int) (maxWidth* 0.25), (int) (maxHeight * 0.75)));
+        seq.addAction(input.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        PointerInput input2 = new PointerInput(PointerInput.Kind.TOUCH,"finger 2");
+        Sequence seq2 = new Sequence(input2, 1);
+        seq2.addAction(input2.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), (int) (maxWidth* 0.5), (int) (maxHeight * 0.5)));
+        seq2.addAction(input2.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        seq2.addAction(input2.createPointerMove(Duration.ofMillis(600), PointerInput.Origin.viewport(),(int) (maxWidth* 0.75), (int) (maxHeight * 0.25)));
+        seq2.addAction(input2.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Arrays.asList(seq,seq2));
+    }
+
+    public void sleep(int mSec) {
+        try {
+            Thread.sleep(mSec);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void swipeUp() {
+        int maxHeight = driver.manage().window().getSize().getHeight();
+        int maxWidth = driver.manage().window().getSize().getWidth();
+        int startX = (int) (maxWidth * 0.5);
+        int startY = (int) (maxHeight * 0.8);
+        int endX = (int) (maxWidth * 0.5);
+        int endY = (int) (maxHeight * 0.2);
+        swipe(startX,startY,endX,endY);
+    }
+
+    public void swipeDown() {
+        int maxHeight = driver.manage().window().getSize().getHeight();
+        int maxWidth = driver.manage().window().getSize().getWidth();
+        int startX = (int) (maxWidth * 0.5);
+        int startY = (int) (maxHeight * 0.2);
+        int endX = (int) (maxWidth * 0.5);
+        int endY = (int) (maxHeight * 0.8);
+        swipe(startX,startY,endX,endY);
+    }
+
+    public void swipeLeft() {
+        int maxHeight = driver.manage().window().getSize().getHeight();
+        int maxWidth = driver.manage().window().getSize().getWidth();
+        int startX = (int) (maxWidth * 0.9);
+        int startY = (int) (maxHeight * 0.5);
+        int endX = (int) (maxWidth * 0.1);
+        int endY = (int) (maxHeight * 0.5);
+        swipe(startX,startY,endX,endY);
+    }
+
+    public void swipeRight() {
+        int maxHeight = driver.manage().window().getSize().getHeight();
+        int maxWidth = driver.manage().window().getSize().getWidth();
+        int startX = (int) (maxWidth * 0.1);
+        int startY = (int) (maxHeight * 0.5);
+        int endX = (int) (maxWidth * 0.9);
+        int endY = (int) (maxHeight * 0.5);
+        swipe(startX,startY,endX,endY);
+    }
+
+    public void swipeUpWithinWebElement(WebElement ele) {
+        int eleStartX = ele.getRect().getX();
+        int eleStartY = ele.getRect().getY();
+        int eleWidth = ele.getRect().getWidth();
+        int eleHeight = ele.getRect().getHeight();
+        int startX = ((int) (eleWidth * 0.5)) + eleStartX;
+        int startY = ((int) (eleHeight * 0.9)) + eleStartY;
+        int endX = ((int) (eleWidth * 0.5)) + eleStartX;
+        int endY = ((int) (eleHeight * 0.1)) + eleStartY;
+        swipe(startX,startY,endX,endY);
+    }
+
+    public void swipeDownWithinWebElement(WebElement ele) {
+        int eleStartX = ele.getRect().getX();
+        int eleStartY = ele.getRect().getY();
+        int eleWidth = ele.getRect().getWidth();
+        int eleHeight = ele.getRect().getHeight();
+        int startX = ((int) (eleWidth * 0.5)) + eleStartX;
+        int startY = ((int) (eleHeight * 0.1)) + eleStartY;
+        int endX = ((int) (eleWidth * 0.5)) + eleStartX;
+        int endY = ((int) (eleHeight * 0.9)) + eleStartY;
+        swipe(startX,startY,endX,endY);
+    }
+
+    public void swipeLeftWithinWebElement(WebElement ele) {
+        int eleStartX = ele.getRect().getX();
+        int eleStartY = ele.getRect().getY();
+        int eleWidth = ele.getRect().getWidth();
+        int eleHeight = ele.getRect().getHeight();
+        int startX = ((int) (eleWidth * 0.9)) + eleStartX;
+        int startY = ((int) (eleHeight * 0.5)) + eleStartY;
+        int endX = ((int) (eleWidth * 0.1)) + eleStartX;
+        int endY = ((int) (eleHeight * 0.5)) + eleStartY;
+        swipe(startX,startY,endX,endY);
+    }
+
+    public void swipeRightWithinWebElement(WebElement ele) {
+        int eleStartX = ele.getRect().getX();
+        int eleStartY = ele.getRect().getY();
+        int eleWidth = ele.getRect().getWidth();
+        int eleHeight = ele.getRect().getHeight();
+        int startX = ((int) (eleWidth * 0.1)) + eleStartX;
+        int startY = ((int) (eleHeight * 0.5)) + eleStartY;
+        int endX = ((int) (eleWidth * 0.9)) + eleStartX;
+        int endY = ((int) (eleHeight * 0.5)) + eleStartY;
+        swipe(startX,startY,endX,endY);
     }
 }
