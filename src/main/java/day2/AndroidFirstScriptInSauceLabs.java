@@ -5,9 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import wrappers.GenericWrappers;
+import wrappersDay2And3.GenericWrappersDay2And3;
 
-public class AndroidFirstScriptInSauceLabs extends GenericWrappers {
+public class AndroidFirstScriptInSauceLabs extends GenericWrappersDay2And3 {
     @BeforeMethod
     public void bm() {
         launchAndroidAppInSauceLabs();

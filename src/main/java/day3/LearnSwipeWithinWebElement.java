@@ -3,9 +3,9 @@ package day3;
 import io.appium.java_client.AppiumBy;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-import wrappers.GenericWrappers;
+import wrappersDay2And3.GenericWrappersDay2And3;
 
-public class LearnSwipeWithinWebElement extends GenericWrappers {
+public class LearnSwipeWithinWebElement extends GenericWrappersDay2And3 {
 
     @Test
     public void runCode() {
