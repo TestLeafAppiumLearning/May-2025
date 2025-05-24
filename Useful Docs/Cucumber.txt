@@ -1,0 +1,66 @@
+Cucumber Framework
+
+Rules of Cucumber
+1. Create a project
+2. Create a Feature file in Gherkin
+3. Implement the steps in scenarios of Feature file
+
+
+Maven simple project
+
+Project Name
+	src/main/java - All the supporting files that is needed to run the test cases
+	src/main/resources - dependent/supporting files that are needed for src/main/java code (stritly no code here)
+	src/test/java - Test cases that should be executed
+	src/test/resources - dependent/supporting files that are needed for src/test/java code (stritly no code here)
+	pom.xml -- Add dependencies and plugins
+
+Manual testing
+Test suite
+	Test scenarios
+		Test cases
+			Test Steps
+
+TestNG
+Suite
+	Test
+		Class
+			Methods
+
+
+Cucumber
+Project
+	Feature
+		Scenario
+			Steps (Gherkin)
+
+
+Test cases in Manual/Excel
+
+Pre-Condition
+
+|S.No|	Steps	| Expected Result 	|
+
+Gherkin
+
+Given - All the Pre-Condition of that test case
+When - Step or the action that needs to be performed
+Then - Expected result for the action performed
+And - Supporting keyword for all others (Combine statements for multiple keywords)
+But - Expected result (Negative scenarios) for the action performed
+* - Wildcard (Any)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

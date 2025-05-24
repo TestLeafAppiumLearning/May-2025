@@ -1,0 +1,42 @@
+Page Object Model Framework
+
+Rules of POM
+1. Reusable methods should be created
+2. Every page should be a separate class and extend the reusable method
+3. Every action should be a separate method in pages
+4. Every method should have a return type and return to the page it lands post completion of that method
+5. Verify the page it has been landed or not
+
+
+Maven simple project
+
+Project Name
+	src/main/java - All the supporting files that is needed to run the test cases
+	src/main/resources - dependent/supporting files that are needed for src/main/java code (stritly no code here)
+	src/test/java - Test cases that should be executed
+	src/test/resources - dependent/supporting files that are needed for src/test/java code (stritly no code here)
+	pom.xml -- Add dependencies and plugins
+
+
+POM Framework
+Project Name  ---> Appium May 2025
+	src/main/java 
+		wrappers
+			GenericWrappers.java
+		pages
+			LoginPage.java
+			HomePage.java
+	src/main/resources
+	src/test/java
+	src/test/resources
+	pom.xml -- Add dependencies and plugins
+
+
+
+
+
+
+
+
+
+
