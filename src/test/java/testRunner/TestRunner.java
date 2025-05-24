@@ -10,7 +10,8 @@ import pages.LoginPage;
 import wrappers.GenericWrappers;
 
 @CucumberOptions(features = {"src/test/resources/features"},
-        glue = "pages")
+        glue = "pages", publish = true,
+        plugin = "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:")
 
 public class TestRunner extends GenericWrappers {
     @Parameters({"platformName","udid","appPackage","appActivity","chromeDriverPort",
