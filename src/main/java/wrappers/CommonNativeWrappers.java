@@ -33,7 +33,7 @@ public class CommonNativeWrappers {
     public static final int MAX_SCROLL = 10;
 
     // Appium driver instance for mobile automation
-    public static AppiumDriver driver;
+    public AppiumDriver driver;
 
     /**
      * Launches the mobile application with specified capabilities
