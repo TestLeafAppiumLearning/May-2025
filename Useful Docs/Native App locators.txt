@@ -1,5 +1,0 @@
-id --> resource-id
-accessibility id --> content-desc
-name --> name
-className --> class (Follow the rules of TagName)
-xpath --> we form it (remember for syntax tagName should be replaced with className eg. //className[@attName='attValue'])

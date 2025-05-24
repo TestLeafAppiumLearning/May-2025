@@ -33,7 +33,7 @@ public class CommonNativeWrappers {
     public static final int MAX_SCROLL = 10;
 
     // Appium driver instance for mobile automation
-    public AppiumDriver driver;
+    public static AppiumDriver driver;
 
     /**
      * Launches the mobile application with specified capabilities
@@ -80,6 +80,7 @@ public class CommonNativeWrappers {
             // Set device-specific capabilities
             if (!udid.isEmpty()) dc.setCapability("appium:udid", udid);
             if (!app.isEmpty()) dc.setCapability("appium:app", System.getProperty("user.dir") + app);
+            dc.setCapability("appium:disableIdLocatorAutocompletion", true);
 
             // Platform-specific configuration
             if (platformName.equalsIgnoreCase("android")) {
@@ -233,7 +234,7 @@ public class CommonNativeWrappers {
             switch (locator) {
                 case "id":
 //                    return driver.findElement(AppiumBy.id(locValue));  // Find by resource ID
-                    return driver.findElement(AppiumBy.xpath("//*[@id='" + locValue + "']"));  // Find by id attribute using xpath for WEBVIEW
+                    return driver.findElement(AppiumBy.xpath("//*[@resource-id='" + locValue + "' or @id='" + locValue + "']"));  // Find by id attribute using xpath for WEBVIEW
                 case "name":
 //                    return driver.findElement(AppiumBy.name(locValue));  // Find by name attribute
                     return driver.findElement(AppiumBy.xpath("//*[@name='" + locValue + "']"));  // Find by name attribute using xpath for WEBVIEW
