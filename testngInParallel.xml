@@ -9,8 +9,8 @@
         <parameter name="udid" value="IRKBBMI7LZGYC68D"></parameter>
         <parameter name="systemPort" value="9001"></parameter>
         <classes>
-            <class name="testCases.TC001"></class>
-            <class name="testCases.TC002"></class>
+            <class name="testRunner.TC001"></class>
+            <class name="testRunner.TC002"></class>
         </classes>
     </test>
 
@@ -18,8 +18,8 @@
         <parameter name="udid" value="RZCY21LXKSX"></parameter>
         <parameter name="systemPort" value="9005"></parameter>
         <classes>
-            <class name="testCases.TC001"></class>
-            <class name="testCases.TC002"></class>
+            <class name="testRunner.TC001"></class>
+            <class name="testRunner.TC002"></class>
         </classes>
     </test>
 </suite>
