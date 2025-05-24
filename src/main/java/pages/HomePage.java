@@ -1,14 +1,15 @@
 package pages;
 
 import io.appium.java_client.AppiumDriver;
+import io.cucumber.java.en.Given;
 import wrappers.GenericWrappers;
 
 public class HomePage extends GenericWrappers {
-    public HomePage(AppiumDriver driver) {
-        this.driver = driver;
+    public HomePage() {
         eleIsDisplayed(getWebElement(Locators.ID.asString(), "tab-t0-0"));
     }
 
+    @Given("Verify Home page is displayed")
     public HomePage verifyMyInfoTabIsDisplayed() {
         eleIsDisplayed(getWebElement(Locators.ID.asString(), "tab-t0-0"));
         return this;

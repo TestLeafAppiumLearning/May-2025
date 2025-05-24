@@ -61,7 +61,7 @@ public class CommonWebWrappers extends CommonNativeWrappers {
                 dc.setCapability("appium:automationName", "UiAutomator2"); // Android automation engine
 
                 // Initialize Android Chrome driver
-                driver = new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), dc);
+                driver.set(new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), dc));
             } else if (platformName.equalsIgnoreCase("ios")) {
                 // iOS Safari configuration
                 if (!wdaLocalPort.isEmpty()) {
@@ -78,13 +78,13 @@ public class CommonWebWrappers extends CommonNativeWrappers {
                 dc.setCapability("appium:nativeWebTap", true);         // Enable native taps for web
 
                 // Initialize iOS Safari driver
-                driver = new IOSDriver(new URI("http://127.0.0.1:4723").toURL(), dc);
+                driver.set(new IOSDriver(new URI("http://127.0.0.1:4723").toURL(), dc));
             }
 
             // Navigate to initial URL
-            driver.get(URL);
+            driver.get().get(URL);
             // Set default implicit wait
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+            driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
             return true;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -100,18 +100,18 @@ public class CommonWebWrappers extends CommonNativeWrappers {
     public void switchWebView() {
         try {
             // Get all available contexts
-            Set<String> contextNames = ((SupportsContextSwitching) driver).getContextHandles();
+            Set<String> contextNames = ((SupportsContextSwitching) driver.get()).getContextHandles();
 
             // Find and switch to first WEBVIEW context
             for (String contextName : contextNames) {
                 if (contextName.contains("WEBVIEW")) {
-                    ((SupportsContextSwitching) driver).context(contextName);
+                    ((SupportsContextSwitching) driver.get()).context(contextName);
                     break;
                 }
             }
 
             // Reset implicit wait
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+            driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,7 +126,7 @@ public class CommonWebWrappers extends CommonNativeWrappers {
     public boolean scrollDownInBrowser(int pixelsToBeScrolled) {
         try {
             // Execute JavaScript scroll
-            JavascriptExecutor jse = driver;
+            JavascriptExecutor jse = driver.get();
             jse.executeScript("window.scrollBy(0," + pixelsToBeScrolled + ")", "");
             return true;
         } catch (Exception e) {
@@ -142,7 +142,7 @@ public class CommonWebWrappers extends CommonNativeWrappers {
      */
     public boolean navigateBackInBrowser() {
         try {
-            driver.navigate().back();  // Go back in browser history
+            driver.get().navigate().back();  // Go back in browser history
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,7 +158,7 @@ public class CommonWebWrappers extends CommonNativeWrappers {
      */
     public boolean loadURL(String url) {
         try {
-            driver.navigate().to(url);  // Navigate to specified URL
+            driver.get().navigate().to(url);  // Navigate to specified URL
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,11 +177,11 @@ public class CommonWebWrappers extends CommonNativeWrappers {
             sleep(5000);
 
             // Get all window handles
-            Set<String> windowHandles = driver.getWindowHandles();
+            Set<String> windowHandles = driver.get().getWindowHandles();
 
             // Switch to last window in set
             for (String windowHandle : windowHandles) {
-                driver.switchTo().window(windowHandle);
+                driver.get().switchTo().window(windowHandle);
             }
             return true;
         } catch (Exception e) {
@@ -201,11 +201,11 @@ public class CommonWebWrappers extends CommonNativeWrappers {
             sleep(5000);
 
             // Get all window handles
-            Set<String> windowHandles = driver.getWindowHandles();
+            Set<String> windowHandles = driver.get().getWindowHandles();
 
             // Switch to first window
             for (String windowHandle : windowHandles) {
-                driver.switchTo().window(windowHandle);
+                driver.get().switchTo().window(windowHandle);
                 break;  // Exit after first window
             }
             return true;

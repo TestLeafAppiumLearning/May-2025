@@ -7,8 +7,7 @@
     <parameter name="app" value="/apks/leaforg.apk"></parameter>
     <test verbose="2" preserve-order="true" name="test1">
         <classes>
-            <class name="testRunner.TC001"></class>
-            <class name="testRunner.TC002"></class>
+            <class name="testRunner.TestRunner"></class>
         </classes>
     </test>
 </suite>

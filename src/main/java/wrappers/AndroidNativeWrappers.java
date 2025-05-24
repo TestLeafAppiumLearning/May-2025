@@ -67,7 +67,7 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
             params.put("intent", appPackage + "/" + appActivity);
 
             // Execute mobile command to start activity
-            driver.executeScript("mobile: startActivity", params);
+            driver.get().executeScript("mobile: startActivity", params);
             return true;
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
      * @return true if key press succeeds
      */
     public boolean pressEnter() {
-        ((PressesKey) driver).pressKey(new KeyEvent(AndroidKey.ENTER));
+        ((PressesKey) driver.get()).pressKey(new KeyEvent(AndroidKey.ENTER));
         return true;
     }
 
@@ -91,7 +91,7 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
      * @return true if key press succeeds
      */
     public boolean pressBack() {
-        ((PressesKey) driver).pressKey(new KeyEvent(AndroidKey.BACK));
+        ((PressesKey) driver.get()).pressKey(new KeyEvent(AndroidKey.BACK));
         return true;
     }
 
@@ -99,7 +99,7 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
      * Opens the Android notification shade
      */
     public void showNotificationMenu() {
-        ((AndroidDriver) driver).openNotifications();  // Open notification drawer
+        ((AndroidDriver) driver.get()).openNotifications();  // Open notification drawer
     }
 
     /**
@@ -116,12 +116,12 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
      */
     public boolean dataOffInAndroid() {
         // Disable WiFi first
-        ((HasNetworkConnection) driver).setConnection(
+        ((HasNetworkConnection) driver.get()).setConnection(
                 new ConnectionStateBuilder().withWiFiDisabled().build());
         sleep(2000);  // Brief pause
 
         // Then disable mobile data
-        ((HasNetworkConnection) driver).setConnection(
+        ((HasNetworkConnection) driver.get()).setConnection(
                 new ConnectionStateBuilder().withDataDisabled().build());
         sleep(2000);  // Brief pause
         return true;
@@ -134,12 +134,12 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
      */
     public boolean dataOnInAndroid() {
         // Enable WiFi first
-        ((HasNetworkConnection) driver).setConnection(
+        ((HasNetworkConnection) driver.get()).setConnection(
                 new ConnectionStateBuilder().withWiFiEnabled().build());
         sleep(2000);  // Brief pause
 
         // Then enable mobile data
-        ((HasNetworkConnection) driver).setConnection(
+        ((HasNetworkConnection) driver.get()).setConnection(
                 new ConnectionStateBuilder().withDataEnabled().build());
         sleep(2000);  // Brief pause
         return true;
@@ -151,7 +151,7 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
      * @return Name of current activity
      */
     public String getCurrentActivity() {
-        return ((StartsActivity) driver).currentActivity();
+        return ((StartsActivity) driver.get()).currentActivity();
     }
 
     /**
@@ -160,6 +160,6 @@ public class AndroidNativeWrappers extends CommonWebWrappers {
      * @return Package name of current app
      */
     public String getCurrentAppPackage() {
-        return ((StartsActivity) driver).getCurrentPackage();
+        return ((StartsActivity) driver.get()).getCurrentPackage();
     }
 }

@@ -5,6 +5,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.SupportsContextSwitching;
 import io.appium.java_client.remote.SupportsRotation;
+import io.cucumber.testng.AbstractTestNGCucumberTests;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Pause;
@@ -28,12 +29,12 @@ import java.util.Set;
  * Includes methods for application management, element interaction, gestures, and device operations.
  */
 @SuppressWarnings("ALL")
-public class CommonNativeWrappers {
+public class CommonNativeWrappers extends AbstractTestNGCucumberTests {
     // Maximum number of scroll attempts when searching for elements
     public static final int MAX_SCROLL = 10;
 
     // Appium driver instance for mobile automation
-    public AppiumDriver driver;
+    public static ThreadLocal<AppiumDriver> driver = new ThreadLocal<>();
 
     /**
      * Launches the mobile application with specified capabilities
@@ -91,7 +92,7 @@ public class CommonNativeWrappers {
                 if (!systemPort.isEmpty()) dc.setCapability("appium:systemPort", systemPort);
 
                 // Initialize Android driver
-                driver = new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), dc);
+                driver.set(new AndroidDriver(new URI("http://127.0.0.1:4723").toURL(), dc));
             } else if (platformName.equalsIgnoreCase("ios")) {
                 // iOS-specific capabilities
                 if (!wdaLocalPort.isEmpty()) dc.setCapability("appium:wdaLocalPort", wdaLocalPort);
@@ -101,11 +102,11 @@ public class CommonNativeWrappers {
                 dc.setCapability("appium:autoAcceptAlerts", true);  // Auto-accept system alerts
 
                 // Initialize iOS driver
-                driver = new IOSDriver(new URI("http://127.0.0.1:4723").toURL(), dc);
+                driver.set(new IOSDriver(new URI("http://127.0.0.1:4723").toURL(), dc));
             }
 
             // Set default implicit wait
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+            driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,7 +123,7 @@ public class CommonNativeWrappers {
     public boolean installApp(String appPath) {
         try {
             // Convert relative path to absolute path and install the app in device
-            ((InteractsWithApps) driver).installApp(System.getProperty("user.dir") + appPath);
+            ((InteractsWithApps) driver.get()).installApp(System.getProperty("user.dir") + appPath);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,7 +140,7 @@ public class CommonNativeWrappers {
     public boolean removeApp(String bundleIdOrAppPackage) {
         try {
             // Remove app using package/bundle identifier
-            ((InteractsWithApps) driver).removeApp(bundleIdOrAppPackage);
+            ((InteractsWithApps) driver.get()).removeApp(bundleIdOrAppPackage);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,12 +158,12 @@ public class CommonNativeWrappers {
     public boolean verifyAndInstallApp(String bundleIdOrAppPackage, String appPath) {
         try {
             // Check if app is already installed
-            if (((InteractsWithApps) driver).isAppInstalled(bundleIdOrAppPackage)) {
+            if (((InteractsWithApps) driver.get()).isAppInstalled(bundleIdOrAppPackage)) {
                 // Remove existing installation
-                ((InteractsWithApps) driver).removeApp(bundleIdOrAppPackage);
+                ((InteractsWithApps) driver.get()).removeApp(bundleIdOrAppPackage);
             }
             // Install fresh copy
-            ((InteractsWithApps) driver).installApp(System.getProperty("user.dir") + appPath);
+            ((InteractsWithApps) driver.get()).installApp(System.getProperty("user.dir") + appPath);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,7 +190,7 @@ public class CommonNativeWrappers {
     public void printContext() {
         try {
             // Get all available contexts (NATIVE_APP, WEBVIEW, etc.)
-            Set<String> contexts = ((SupportsContextSwitching) driver).getContextHandles();
+            Set<String> contexts = ((SupportsContextSwitching) driver.get()).getContextHandles();
             // Print each context to console
             for (String context : contexts) {
                 System.out.println(context);
@@ -206,10 +207,10 @@ public class CommonNativeWrappers {
      */
     public void switchContext(String context) {
         try {
-            // Switch driver context
-            ((SupportsContextSwitching) driver).context(context);
+            // Switch driver.get() context
+            ((SupportsContextSwitching) driver.get()).context(context);
             // Reset implicit wait
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+            driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,25 +234,25 @@ public class CommonNativeWrappers {
         try {
             switch (locator) {
                 case "id":
-//                    return driver.findElement(AppiumBy.id(locValue));  // Find by resource ID
-                    return driver.findElement(AppiumBy.xpath("//*[@resource-id='" + locValue + "' or @id='" + locValue + "']"));  // Find by id attribute using xpath for WEBVIEW
+//                    return driver.get().findElement(AppiumBy.id(locValue));  // Find by resource ID
+                    return driver.get().findElement(AppiumBy.xpath("//*[@resource-id='" + locValue + "' or @id='" + locValue + "']"));  // Find by id attribute using xpath for WEBVIEW
                 case "name":
-//                    return driver.findElement(AppiumBy.name(locValue));  // Find by name attribute
-                    return driver.findElement(AppiumBy.xpath("//*[@name='" + locValue + "']"));  // Find by name attribute using xpath for WEBVIEW
+//                    return driver.get().findElement(AppiumBy.name(locValue));  // Find by name attribute
+                    return driver.get().findElement(AppiumBy.xpath("//*[@name='" + locValue + "']"));  // Find by name attribute using xpath for WEBVIEW
                 case "className":
-                    return driver.findElement(AppiumBy.className(locValue));  // Find by class name
+                    return driver.get().findElement(AppiumBy.className(locValue));  // Find by class name
                 case "link":
-                    return driver.findElement(AppiumBy.linkText(locValue));  // Find by exact link text
+                    return driver.get().findElement(AppiumBy.linkText(locValue));  // Find by exact link text
                 case "partialLink":
-                    return driver.findElement(AppiumBy.partialLinkText(locValue));  // Find by partial link text
+                    return driver.get().findElement(AppiumBy.partialLinkText(locValue));  // Find by partial link text
                 case "tag":
-                    return driver.findElement(AppiumBy.tagName(locValue));  // Find by HTML tag
+                    return driver.get().findElement(AppiumBy.tagName(locValue));  // Find by HTML tag
                 case "css":
-                    return driver.findElement(AppiumBy.cssSelector(locValue));  // Find by CSS selector
+                    return driver.get().findElement(AppiumBy.cssSelector(locValue));  // Find by CSS selector
                 case "xpath":
-                    return driver.findElement(AppiumBy.xpath(locValue));  // Find by XPath
+                    return driver.get().findElement(AppiumBy.xpath(locValue));  // Find by XPath
                 case "accessibilityId":
-                    return driver.findElement(AppiumBy.accessibilityId(locValue));  // Find by (content-desc) accessibility ID
+                    return driver.get().findElement(AppiumBy.accessibilityId(locValue));  // Find by (content-desc) accessibility ID
                 default:
                     throw new IllegalArgumentException("Invalid locator type: " + locator);
             }
@@ -271,7 +272,7 @@ public class CommonNativeWrappers {
         long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
         try {
             // Capture screenshot as file
-            File srcFile = driver.getScreenshotAs(OutputType.FILE);
+            File srcFile = driver.get().getScreenshotAs(OutputType.FILE);
             // Save to images directory
             FileUtils.copyFile(srcFile, new File(System.getProperty("user.dir") +
                     File.separator + "images" + File.separator + number + ".png"));
@@ -335,7 +336,7 @@ public class CommonNativeWrappers {
             sequence.addAction(input.createPointerUp(MouseButton.LEFT.asArg()));
 
             // Execute gesture
-            driver.perform(Collections.singletonList(sequence));
+            driver.get().perform(Collections.singletonList(sequence));
             return true;
         } catch (Exception e) {
             return false;
@@ -364,7 +365,7 @@ public class CommonNativeWrappers {
         doubleTap.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
 
         // Execute gesture
-        driver.perform(Collections.singletonList(doubleTap));
+        driver.get().perform(Collections.singletonList(doubleTap));
     }
 
     /**
@@ -385,7 +386,7 @@ public class CommonNativeWrappers {
         longPress.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
 
         // Execute gesture
-        driver.perform(Collections.singletonList(longPress));
+        driver.get().perform(Collections.singletonList(longPress));
     }
 
     /**
@@ -393,8 +394,8 @@ public class CommonNativeWrappers {
      */
     public void pinchInApp() {
         // Get screen dimensions
-        int maxY = driver.manage().window().getSize().getHeight();
-        int maxX = driver.manage().window().getSize().getWidth();
+        int maxY = driver.get().manage().window().getSize().getHeight();
+        int maxX = driver.get().manage().window().getSize().getWidth();
 
         // Create first finger gesture (top-right to center)
         PointerInput finger1 = new PointerInput(Kind.TOUCH, "finger1");
@@ -417,7 +418,7 @@ public class CommonNativeWrappers {
         b.addAction(finger2.createPointerUp(MouseButton.LEFT.asArg()));
 
         // Execute simultaneous gestures
-        driver.perform(Arrays.asList(a, b));
+        driver.get().perform(Arrays.asList(a, b));
     }
 
     /**
@@ -425,8 +426,8 @@ public class CommonNativeWrappers {
      */
     public void zoomInApp() {
         // Get screen dimensions
-        int maxY = driver.manage().window().getSize().getHeight();
-        int maxX = driver.manage().window().getSize().getWidth();
+        int maxY = driver.get().manage().window().getSize().getHeight();
+        int maxX = driver.get().manage().window().getSize().getWidth();
 
         // Create first finger gesture (center to top-right)
         PointerInput finger1 = new PointerInput(Kind.TOUCH, "finger1");
@@ -449,7 +450,7 @@ public class CommonNativeWrappers {
         b.addAction(finger2.createPointerUp(MouseButton.LEFT.asArg()));
 
         // Execute simultaneous gestures
-        driver.perform(Arrays.asList(a, b));
+        driver.get().perform(Arrays.asList(a, b));
     }
 
     /**
@@ -484,7 +485,7 @@ public class CommonNativeWrappers {
      */
     private boolean swipeUpInApp() {
         // Calculate swipe coordinates (80% to 20% vertical)
-        Dimension size = driver.manage().window().getSize();
+        Dimension size = driver.get().manage().window().getSize();
         int startX = (int) (size.getWidth() * 0.5);
         int startY = (int) (size.getHeight() * 0.8);
         int endX = (int) (size.getWidth() * 0.5);
@@ -499,7 +500,7 @@ public class CommonNativeWrappers {
      */
     private boolean swipeDownInApp() {
         // Calculate swipe coordinates (20% to 80% vertical)
-        Dimension size = driver.manage().window().getSize();
+        Dimension size = driver.get().manage().window().getSize();
         int startX = (int) (size.getWidth() * 0.5);
         int startY = (int) (size.getHeight() * 0.2);
         int endX = (int) (size.getWidth() * 0.5);
@@ -514,7 +515,7 @@ public class CommonNativeWrappers {
      */
     private boolean swipeLeftInApp() {
         // Calculate swipe coordinates (80% to 20% horizontal)
-        Dimension size = driver.manage().window().getSize();
+        Dimension size = driver.get().manage().window().getSize();
         int startX = (int) (size.getWidth() * 0.8);
         int startY = (int) (size.getHeight() * 0.5);
         int endX = (int) (size.getWidth() * 0.2);
@@ -529,7 +530,7 @@ public class CommonNativeWrappers {
      */
     private boolean swipeRightInApp() {
         // Calculate swipe coordinates (20% to 80% horizontal)
-        Dimension size = driver.manage().window().getSize();
+        Dimension size = driver.get().manage().window().getSize();
         int startX = (int) (size.getWidth() * 0.2);
         int startY = (int) (size.getHeight() * 0.5);
         int endX = (int) (size.getWidth() * 0.8);
@@ -698,9 +699,9 @@ public class CommonNativeWrappers {
      * Closes application and cleans up driver session
      */
     public void closeApp() {
-        if (driver != null) {
+        if (driver.get() != null) {
             try {
-                driver.quit();  // Terminate driver session
+                driver.get().quit();  // Terminate driver session
             } catch (Exception ignored) {
                 // Silently handle any cleanup errors
             }
@@ -713,7 +714,7 @@ public class CommonNativeWrappers {
      * @return true if orientation change succeeds
      */
     public boolean setPortraitOrientation() {
-        ((SupportsRotation) driver).rotate(ScreenOrientation.PORTRAIT);
+        ((SupportsRotation) driver.get()).rotate(ScreenOrientation.PORTRAIT);
         return true;
     }
 
@@ -723,7 +724,7 @@ public class CommonNativeWrappers {
      * @return true if orientation change succeeds
      */
     public boolean setLandscapeOrientation() {
-        ((SupportsRotation) driver).rotate(ScreenOrientation.LANDSCAPE);
+        ((SupportsRotation) driver.get()).rotate(ScreenOrientation.LANDSCAPE);
         return true;
     }
 
@@ -735,11 +736,11 @@ public class CommonNativeWrappers {
         if (isKeyboardShown()) {
             try {
                 // Standard keyboard dismissal
-                ((HidesKeyboard) driver).hideKeyboard();
+                ((HidesKeyboard) driver.get()).hideKeyboard();
             } catch (Exception e) {
                 // iOS-specific keyboard handling
-                if (driver.getCapabilities().getPlatformName().toString().equalsIgnoreCase("iOS")) {
-                    String context = ((SupportsContextSwitching) driver).getContext();
+                if (driver.get().getCapabilities().getPlatformName().toString().equalsIgnoreCase("iOS")) {
+                    String context = ((SupportsContextSwitching) driver.get()).getContext();
                     assert context != null;
                     boolean isNative = context.equalsIgnoreCase("NATIVE_APP");
 
@@ -764,7 +765,7 @@ public class CommonNativeWrappers {
      * @return true if keyboard is visible
      */
     public boolean isKeyboardShown() {
-        return ((HasOnScreenKeyboard) driver).isKeyboardShown();
+        return ((HasOnScreenKeyboard) driver.get()).isKeyboardShown();
     }
 
     /**
@@ -773,7 +774,7 @@ public class CommonNativeWrappers {
      * @return Current orientation as string (PORTRAIT/LANDSCAPE)
      */
     public String getOrientation() {
-        return ((SupportsRotation) driver).getOrientation().toString();
+        return ((SupportsRotation) driver.get()).getOrientation().toString();
     }
 
     /**
@@ -836,7 +837,7 @@ public class CommonNativeWrappers {
          * If App is running in BG - Bring the app to the FG
          * If App is not running - Launch the app with the given appPackage / bundleId
          */
-        ((InteractsWithApps) driver).activateApp(bundleIdOrAppPackage);
+        ((InteractsWithApps) driver.get()).activateApp(bundleIdOrAppPackage);
     }
 
     /**
@@ -845,7 +846,7 @@ public class CommonNativeWrappers {
      * @param bundleIdOrAppPackage Bundle ID (iOS) or package name (Android)
      */
     public void terminateOrStopRunningApp(String bundleIdOrAppPackage) {
-        ((InteractsWithApps) driver).terminateApp(bundleIdOrAppPackage);
+        ((InteractsWithApps) driver.get()).terminateApp(bundleIdOrAppPackage);
     }
 
     /**
