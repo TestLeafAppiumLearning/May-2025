@@ -2,6 +2,7 @@ package wrappersDay2And3;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
@@ -62,6 +63,30 @@ public class GenericWrappersDay2And3 {
             caps.setCapability("sauce:options", sauceOptions);
             URL url = new URL("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub");
             driver = new AndroidDriver(url, caps);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void launchIosAppInSauceLabs() {
+        try {
+            MutableCapabilities caps = new MutableCapabilities();
+            caps.setCapability("platformName", "iOS");
+            caps.setCapability("appium:app", "storage:filename=UICatalog.zip");  // The filename of the mobile app
+            caps.setCapability("appium:deviceName", "iPhone Simulator");
+            caps.setCapability("appium:platformVersion", "current_major");
+            caps.setCapability("appium:automationName", "XCUITest");
+            MutableCapabilities sauceOptions = new MutableCapabilities();
+            sauceOptions.setCapability("username", "oauth-appiummay2025-e7ea4");
+            sauceOptions.setCapability("accessKey", "b65d0f76-7f8b-42dd-8356-75fd31bdb148");
+            sauceOptions.setCapability("build", "<your build id>");
+            sauceOptions.setCapability("name", "<your test name>");
+            sauceOptions.setCapability("deviceOrientation", "PORTRAIT");
+            caps.setCapability("sauce:options", sauceOptions);
+
+            URL url = new URL("https://ondemand.eu-central-1.saucelabs.com:443/wd/hub");
+            driver = new IOSDriver(url, caps);
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
