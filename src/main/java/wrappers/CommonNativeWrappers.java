@@ -101,7 +101,7 @@ public class CommonNativeWrappers {
                 if (!xcodeOrgId.isEmpty()) dc.setCapability("appium:xcodeOrgId", xcodeOrgId);
                 if (!xcodeSigningId.isEmpty()) dc.setCapability("appium:xcodeSigningId", xcodeSigningId);
                 if (!bundleId.isEmpty()) dc.setCapability("appium:bundleId", bundleId);
-
+                dc.setCapability("appium:wdaLaunchTimeout",90000);
                 // Initialize iOS driver
                 driver = new IOSDriver(new URI("http://127.0.0.1:4723").toURL(), dc);
             }
