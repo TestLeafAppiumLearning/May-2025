@@ -67,7 +67,11 @@ public class CommonNativeWrappers {
                 dc.setCapability("appium:forceAppLaunch", true);  // Force relaunch on session start
                 dc.setCapability("appium:shouldTerminateApp", true); // Close app on driver.quit()
             } else {
-                dc.setCapability("appium:autoGrantPermissions", true);  // Auto-accept permissions
+                if (platformName.equalsIgnoreCase("android")) {
+                    dc.setCapability("appium:autoGrantPermissions", true);  // Auto-accept permissions
+                } else {
+                    dc.setCapability("appium:autoAcceptAlerts", true);  // Auto-accept system alerts
+                }
             }
 
             // Set mandatory capabilities
@@ -97,8 +101,7 @@ public class CommonNativeWrappers {
                 if (!xcodeOrgId.isEmpty()) dc.setCapability("appium:xcodeOrgId", xcodeOrgId);
                 if (!xcodeSigningId.isEmpty()) dc.setCapability("appium:xcodeSigningId", xcodeSigningId);
                 if (!bundleId.isEmpty()) dc.setCapability("appium:bundleId", bundleId);
-                dc.setCapability("appium:autoAcceptAlerts", true);  // Auto-accept system alerts
-
+                dc.setCapability("appium:wdaLaunchTimeout",90000);
                 // Initialize iOS driver
                 driver = new IOSDriver(new URI("http://127.0.0.1:4723").toURL(), dc);
             }

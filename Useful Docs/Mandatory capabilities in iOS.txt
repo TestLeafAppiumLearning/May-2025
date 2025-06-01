@@ -1,0 +1,60 @@
+Native App/Hybrid App
+
+Create a session
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:udid --> UDID of device (optional but recommended)
+
+Create a session, install the given application and launch it
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:app --> Absolute Path of my ipa/app file (App Installer file)
+4. appium:udid --> UDID of device (optional but recommended)
+
+Create a session, launch the application which is already installed
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:bundleId --> Bundle Id of the app given by developer
+4. appium:udid --> UDID of device (optional but recommended)
+
+Create a session (parallel execution in multiple device)
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:udid --> Unique Device IDentifier (UDID) of the mobile (Retrieved using xcrun xctrace list devices)
+4. appium:wdaLocalPort --> WebDriverAgent local port
+5. appium:deviceName --> Simulator Name (only for Simulator)
+6. appium:platformVersion --> Simulator OS version (only for Simulator)
+
+Create a session, install the given application and launch it (parallel execution in multiple device)
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:app --> Absolute Path of my ipa/app file (App Installer file)
+4. appium:udid --> Unique Device IDentifier (UDID) of the mobile (Retrieved using xcrun xctrace list devices)
+5. appium:wdaLocalPort --> WebDriverAgent local port
+6. appium:deviceName --> Simulator Name (only for Simulator)
+7. appium:platformVersion --> Simulator OS version (only for Simulator)
+
+Create a session, launch the application which is already installed (parallel execution in multiple device)
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:bundleId --> Bundle Id of the app given by developer
+4. appium:udid --> Unique Device IDentifier (UDID) of the mobile (Retrieved using xcrun xctrace list devices)
+5. appium:wdaLocalPort --> WebDriverAgent local port
+6. appium:deviceName --> Simulator Name (only for Simulator)
+7. appium:platformVersion --> Simulator OS version (only for Simulator)
+
+Web App
+Create a session
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:browserName --> Safari
+
+Create a session (parallel execution in multiple device)
+1. platformName --> iOS
+2. appium:automationName --> XCUITest
+3. appium:browserName --> Safari
+4. appium:udid --> Unique Device IDentifier (UDID) of the mobile (Retrieved using xcrun xctrace list devices)
+5. appium:wdaLocalPort --> WebDriverAgent local port
+6. appium:deviceName --> Simulator Name (only for Simulator)
+7. appium:platformVersion --> Simulator OS version (only for Simulator)
+

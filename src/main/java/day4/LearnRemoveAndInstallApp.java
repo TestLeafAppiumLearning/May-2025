@@ -1,4 +1,4 @@
-package learning.day4;
+package day4;
 
 import org.testng.annotations.Test;
 import wrappers.GenericWrappers;
