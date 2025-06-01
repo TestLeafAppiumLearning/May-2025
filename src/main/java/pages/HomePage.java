@@ -1,6 +1,5 @@
 package pages;
 
-import io.appium.java_client.AppiumDriver;
 import io.cucumber.java.en.Given;
 import wrappers.GenericWrappers;
 

@@ -1,7 +1,5 @@
 package pages;
 
-import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
@@ -14,19 +12,19 @@ import java.time.Duration;
 
 public class LoginPage extends GenericWrappers {
     @AndroidFindBy(className = "android.widget.EditText")
-    @iOSXCUITFindBy(id="ios locator")
+    @iOSXCUITFindBy(id = "ios locator")
     WebElement userName;
 
     @AndroidFindBy(xpath = "(//android.widget.EditText)[2]")
-    @iOSXCUITFindBy(id="ios locator")
+    @iOSXCUITFindBy(id = "ios locator")
     WebElement password;
 
     @AndroidFindBy(className = "android.widget.Button")
-    @iOSXCUITFindBy(id="ios locator")
+    @iOSXCUITFindBy(id = "ios locator")
     WebElement loginButton;
 
     public LoginPage() {
-        PageFactory.initElements(new AppiumFieldDecorator(driver.get(), Duration.ofSeconds(30)),this);
+        PageFactory.initElements(new AppiumFieldDecorator(driver.get(), Duration.ofSeconds(30)), this);
         eleIsDisplayed(userName);
     }
 
@@ -56,7 +54,7 @@ public class LoginPage extends GenericWrappers {
 
     @Given("Error message is thrown in login page")
     public LoginPage error_message_is_thrown_in_login_page() {
-        eleIsDisplayed(getWebElement(Locators.XPATH.asString(),"//android.widget.TextView[@text=\"User does not exist\"]" ));
+        eleIsDisplayed(getWebElement(Locators.XPATH.asString(), "//android.widget.TextView[@text=\"User does not exist\"]"));
         return this;
     }
 
